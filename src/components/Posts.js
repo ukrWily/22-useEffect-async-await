@@ -10,14 +10,30 @@ function Posts() {
   const API_URL = "https://jsonplaceholder.typicode.com/posts";
   //
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((posts) => setPosts(posts))
-      .catch((error) => setError(error.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    async function fetchData() {
+      try {
+        const res = await fetch(API_URL);
+        const posts = await res.json();
+        setPosts(posts);
+      } catch (error) {
+        setError(error.message);
+      }
+      setIsLoading(false);
+    }
+    fetchData();
   }, []);
+  /**
+   * without async
+   */
+  // useEffect(() => {
+  //   fetch(API_URL)
+  //     .then((response) => response.json())
+  //     .then((posts) => setPosts(posts))
+  //     .catch((error) => setError(error.message))
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // }, []);
   //
   if (error) {
     return <h1>Error: {error}</h1>;
